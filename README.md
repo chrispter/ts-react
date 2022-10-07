@@ -6,12 +6,17 @@
 # Dev
 
 Proyectos vistos en React PRO
+Clone 
+```
+git clone git@github.com:chrispter/ts-react.git
+````
+
 Install
 ```
 yarn
 ```
 
-2. Ejecutar
+Ejecutar
 ```
 yarn start
 ```
