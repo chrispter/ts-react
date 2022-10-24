@@ -147,3 +147,9 @@ export const ShoppingPage = () => {
   )
 }
 ```
+
+## Extensible Styles
+
+<p>Extender la funcionalidad de nuestro componente añadiendo la posibilidad de interpretar clases de CSS y/o estilos en línea (inline styles)</p>
+
+<p>Modificaremos nuestras interfaces y componentes, pero al final del día, tendremos una componente personalizable.</p>
