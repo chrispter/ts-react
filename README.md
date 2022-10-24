@@ -28,39 +28,76 @@ yarn start
 - Aplicar Lazy Load en cada Componente
 - Aplicar Lazy Load por módulo
 
+01-Lazyload / Layout / LazyLayout.tsx
+
 ```javascript
-export const LazyLayout = () => {
-  return (
-    <div>
-      <h1>LazyLayout Page</h1>
+  export const LazyLayout = () => {
+    return (
+      <div>
+        <h1>LazyLayout Page</h1>
 
-      {/* Rutas hijas iran aqui */}
-      <ul>
-        <li>
-          <NavLink to="lazy1">Lazy 1</NavLink>
-        </li>
-        <li>
-          <NavLink to="lazy2">Lazy 2</NavLink>
-        </li>
-        <li>
-          <NavLink to="lazy3">Lazy 3</NavLink>
-        </li>
-      </ul>
-      <Routes>
-        <Route path="lazy1" element={ <LazyPage1 /> } />
-        <Route path="lazy2" element={ <LazyPage2 /> } />
-        <Route path="lazy3" element={ <LazyPage3 /> } />
+        {/* Rutas hijas iran aqui */}
+        <ul>
+          <li>
+            <NavLink to="lazy1">Lazy 1</NavLink>
+          </li>
+          <li>
+            <NavLink to="lazy2">Lazy 2</NavLink>
+          </li>
+          <li>
+            <NavLink to="lazy3">Lazy 3</NavLink>
+          </li>
+        </ul>
+        <Routes>
+          <Route path="lazy1" element={ <LazyPage1 /> } />
+          <Route path="lazy2" element={ <LazyPage2 /> } />
+          <Route path="lazy3" element={ <LazyPage3 /> } />
 
-        {/* <Route path="*" element={ <div>Not Found</div> } /> */}
-        <Route path="*" element={ <Navigate replace to="lazy1" /> } />
+          {/* <Route path="*" element={ <div>Not Found</div> } /> */}
+          <Route path="*" element={ <Navigate replace to="lazy1" /> } />
 
-      </Routes>
-    </div>
-  )
+        </Routes>
+      </div>
+    )
+  }
+
+  export default LazyLayout;
+  }
+```
+
+- routes / routes.ts
+
+```javascript
+  import { FC, lazy, LazyExoticComponent } from "react";
+import { NoLazy } from "../01-Lazyload/pages";
+// import { LazyPage1, LazyPage2, LazyPage3 } from "../01-Lazyload/pages";
+
+type JSXComponent = () => JSX.Element;
+
+interface Route {
+   to: string;
+   path: string;
+   Component: JSXComponent | LazyExoticComponent<() => JSX.Element> | LazyExoticComponent<FC<{}>>;
+   name: string; 
 }
 
-export default LazyLayout;
-}
+const LazyLayout = lazy(() => import(/* webpackChunkName: "LazyLayout" */ '../01-Lazyload/Layout/LazyLayout'))
+
+
+export const routes: Route[] = [
+    { 
+        path: '/lazyload/*', 
+        to: '/lazyload/', 
+        Component: LazyLayout, 
+        name: 'LazyLayout - Dashboard' 
+    },
+    { 
+        to: '/no-lazy', 
+        path: 'no-lazy', 
+        Component: NoLazy, 
+        name: 'No Lazy' 
+    },
+]
 ```
 
 ## Component Compound Pattern
@@ -68,15 +105,14 @@ export default LazyLayout;
 <p>Patrón de construcción de componentes llamado "Compound Component Pattern" el cual es muy usado por Material UI, ionic y muchos otros que trabajan con componentes previamente creados que se pueden anidar entre si mediante HOCs (Higher Order Components)</p>
 
 
-```mermaid
-graph TD;
-    02-components-patters-->
-    assets
-    components
-    hooks
-    interface
-    Pages
-    styles
+```/
+  |-- 02-components-patters/
+  |---- assets
+  |---- components
+  |---- hooks
+  |---- interface
+  |---- Pages
+  |----  styles
     ;
 ```
 
